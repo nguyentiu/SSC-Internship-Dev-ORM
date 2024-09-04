@@ -308,3 +308,20 @@ Giải Thích
 - Cấu hình DbContext: Cấu hình chuỗi kết nối và đăng ký `ApplicationDbContext` trong `Program.cs`.
 - StudentService: Thực hiện các thao tác CRUD với cơ sở dữ liệu thông qua ApplicationDbContext.
 - StudentsController: Cung cấp các API endpoint để tạo, đọc, cập nhật và xóa sinh viên.
+
+Get dữ liệu sử dụng LINQ
+```csharp
+//StudentService
+public async Task<List<Student>> GetAdultStudentsAsync()
+{
+    return await _context.Students.where(s => s.Age > 18).ToListAsync();  // Lấy tất cả sinh viên từ bảng Students có tuổi lớn hơn 18
+}
+
+//Controller
+[HttpGet("adults")]
+public async Task<IActionResult> GetAdultsStudents()
+{
+    var students = await _studentService.GetAdultsStudentsAsync();
+    return Ok(students);
+}
+```
